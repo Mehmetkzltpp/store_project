@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
 from .serializers import CheckoutSerializer
+from rest_framework import filters
 
 # Create your views here.
 
@@ -19,6 +20,15 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+
+    #activating search and ordering filters
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+
+    #defining which database columns the user is allowed to search through
+    search_fields = ['name', 'descriptipn', 'category__name']
+
+    #defining which columns the user can use to sort data
+    order_fields = ['price', 'stock_quantity']
 
 # SINGLE PRODUCT MANAGER
 
